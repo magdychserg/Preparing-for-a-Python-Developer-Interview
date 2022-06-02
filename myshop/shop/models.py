@@ -28,6 +28,7 @@ class Product(models.Model):
     price = models.DecimalField(verbose_name='цена', max_digits=8, decimal_places=0, default=0)
     unit = models.IntegerField(verbose_name='еденица измерения', choices=UNITS)
     provider = models.CharField(verbose_name='имя поставщика', max_length=256, blank=True)
+    category = models.ManyToManyField(Category)
 
     def __str__(self):
         return self.name
