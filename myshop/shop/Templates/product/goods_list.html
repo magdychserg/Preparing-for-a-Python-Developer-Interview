@@ -1,16 +1,12 @@
 <tr>
-    <th>Название</th>
-    <th>Цена</th>
+<!--    <th>Название</th>-->
+<!--    <th>Цена</th>-->
     <th>Категория</th>
+    <th>Site</th>
 </tr>
-{% for object in object_list %}
-<tr>
-    {{object.site.name}}
-
-    {% for product in object.products.all %}
-    <td>{{ product.name }}</td>
-    <td>{{ product.price }}</td>
-    <td>{{object.name}}</td>
+    {% for object in object_list %}
+    <tr>
+        <th>{{object.name}}</th>
+        <th>{{site.name}}</th>
+    </tr>
     {% endfor %}
-</tr>
-{% endfor %}

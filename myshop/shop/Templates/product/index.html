@@ -5,13 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-<div>
-    {{user.name}}  {{user.age}}
-</div>
-{% for object in object_list %}
-    <div>
-        {{object.name}} {{object.price}}
-    </div>
-{% endfor %}
+<table class="table">
+    <tr>
+        <th> Название  </th>
+        <th> Цена, р.  </th>
+        <th>Site  </th>
+    </tr>
+    {% for object in object_list %}
+    <tr>
+        <th>{{object.name}}</th>
+        <th>{{object.price}}</th>
+        <th>{{site.name}}</th>
+    </tr>
+    {% endfor %}
+</table>
 </body>
 </html>
