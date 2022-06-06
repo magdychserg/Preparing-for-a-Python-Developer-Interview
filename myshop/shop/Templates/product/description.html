@@ -5,12 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<div>
-    {{user.name}}  {{user.age}}
-</div>
+
 {% for object in object_list %}
+<!--    {{ object.deleted }}-->
     <div>
-        {{object.name}} {{object.price}}
+        {{object.text}} {{object.product.name}} {{object.product.price}}
     </div>
 {% endfor %}
 </body>

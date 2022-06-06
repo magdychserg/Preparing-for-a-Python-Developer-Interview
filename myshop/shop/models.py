@@ -1,16 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Category(models.Model):
-    name = models.CharField(max_length=200, db_index=True)
 
-
-    class Meta:
-        verbose_name = 'категория'
-        verbose_name_plural = 'категории'
-
-    def __str__(self):
-        return self.name
 
 
 class Product(models.Model):
@@ -28,7 +19,28 @@ class Product(models.Model):
     price = models.DecimalField(verbose_name='цена', max_digits=8, decimal_places=0, default=0)
     unit = models.IntegerField(verbose_name='еденица измерения', choices=UNITS)
     provider = models.CharField(verbose_name='имя поставщика', max_length=256, blank=True)
-    category = models.ManyToManyField(Category)
+
 
     def __str__(self):
         return self.name
+
+class Category(models.Model):
+    name = models.CharField(max_length=200, db_index=True)
+    products = models.ManyToManyField(Product)
+
+    class Meta:
+        verbose_name = 'категория'
+        verbose_name_plural = 'категории'
+
+    def __str__(self):
+        return self.name
+
+class DescriptionProduct(models.Model):
+    text = models.CharField(max_length=64)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # deleted = models.BooleanField(default=False, null=False)
+
+
+    def __str__(self):
+        return self.text
+

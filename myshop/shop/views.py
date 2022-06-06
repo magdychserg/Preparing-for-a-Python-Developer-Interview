@@ -1,50 +1,62 @@
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Product,DescriptionProduct,Category
 
-# Create your views here.
-from django.views.generic import ListView, DetailView
+class UserListView(ListView):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
 
-from .models import Product, Category
-
-def product_list(request):
-    category = None
-    categories = Category.objects.all()
-    products = Product.objects.all()
-
-    return render(request, 'product\index.html',
-                  {'category': category, 'categories': categories,
-                   'products': products})
-
-
-class ProductDeatail(DetailView):
-    model = Product
-    template_name = 'product\index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ProductDeatail, self).get_context_data(**kwargs)
-        product = self.get_object()
-        context['product'] = product
         return context
-# class UserListView(ListView):
-#     def get_context_data(self, *args, **kwargs):
-#         context = super().get_context_data(*args, **kwargs)
-#         context.update({
+
+
+class ProductListView(UserListView):
+    model = Product
+    queryset = Product.objects.all()
+    template_name = 'product/index.html'
+
+
+class CategoryListView(UserListView):
+    model = Category
+    queryset = Category.objects.prefetch_related('products').all()
+    # queryset = Book.on_site.prefetch_related('authors').all()
+    template_name = 'product/categories.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        return context
+
+
+class DescriptionListView(UserListView):
+    model = DescriptionProduct
+    queryset = DescriptionProduct.objects.select_related('product').all()
+    template_name = 'product/description.html'
+    # extra_context = {
+    #     'user': {'name': 'Denis', 'age': '41'}
+    # }
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
+    #     context.update({
+    #         'user': {'name': 'Denis', 'age': '41'}
+    #     })
+    #     return context
+
+
+# def return_extra():
+#     return {'name': 'Denis', 'age': '41'}
+
+
+# def get_page(request):
+#     return render(request, 'index.html', context={
+#         'object_list': Author.objects.all(),
+#         'user': return_extra()
+#     })
 #
-#         })
-#         return context
 #
-# class ProductListView(UserListView):
-#     model = Product
-#     queryset = Product.objects.all()
-#     template_name = 'index.html'
-#
-# class CategoryListView(UserListView):
-#     model = Category
-#     queryset = Category.objects.select_related('product').all()
-#
-#     template_name = 'category.html'
-#
-#     def get_context_data(self, *args, **kwargs):
-#         context = super().get_context_data(*args, **kwargs)
-#         # context.update({
-#         #     'user': {'name': 'Denis', 'age': '41'},
-#         return context
+# def get_page_1(request):
+#     return render(request, 'index1.html', context={
+#         'object_list_1': Author.objects.all(),
+#         'user': return_extra()
+#     })
